@@ -1,5 +1,5 @@
-const CLIENT_ID = "64399475600-sh6evsjndpbij18p252ffq6q33gkpqrn.apps.googleusercontent.com";
-const API_KEY = "AIzaSyD4HW8_ZGvq3_ofZCSem2BJ5JHImlQ2NKc";
+const CLIENT_ID = "64399475600-sh6evsjndpbij18p252ffq6q33gkpqrn.apps.googleusercontent.com"; // Coloque seu ID o que está aí é um exemplo
+const API_KEY = "AIzaSyD4HW8_ZGvq3_ofZCSem2BJ5JHImlQ2NKc"; // Coloque sua chave o que está aí é um exemplo
 const DISCOVERY_DOC = "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
 const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 

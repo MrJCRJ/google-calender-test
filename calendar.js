@@ -1,26 +1,37 @@
 async function listUpcomingEvents() {
   try {
-    const request = {
-      calendarId: "primary",
-      timeMin: new Date().toISOString(),
-      showDeleted: false,
-      singleEvents: true,
-      maxResults: 10,
-      orderBy: "startTime",
-    };
+    let allEvents = [];
+    let pageToken = null;
 
-    const response = await gapi.client.calendar.events.list(request);
-    const events = response.result.items;
+    do {
+      const request = {
+        calendarId: "primary",
+        timeMin: '2025-02-01T00:00:00.000Z',
+        timeMax: '2025-02-28T23:59:59.999Z',
+        showDeleted: false,
+        singleEvents: true,
+        maxResults: 10,
+        orderBy: "startTime",
+        pageToken: pageToken,
+      };
 
-    if (!events || events.length == 0) {
+      const response = await gapi.client.calendar.events.list(request);
+      const events = response.result.items;
+      allEvents = allEvents.concat(events);
+
+      pageToken = response.result.nextPageToken;
+    } while (pageToken);
+
+    if (allEvents.length === 0) {
       document.getElementById("content").innerText = "Nenhum evento encontrado.";
       return;
     }
 
-    const output = events.reduce(
-      (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
-      "Eventos:\n"
-    );
+    const output = allEvents.reduce((str, event) => {
+      const startTime = event.start.dateTime || event.start.date;
+      const endTime = event.end?.dateTime || event.end?.date || "Sem horário final";
+      return `${str}${event.summary} (${startTime} → ${endTime})\n`;
+    }, "Eventos:\n");
 
     document.getElementById("content").innerText = output;
   } catch (err) {
