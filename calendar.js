@@ -1,4 +1,5 @@
 async function listUpcomingEvents() {
+
   try {
     let allEvents = [];
     let pageToken = null;
@@ -10,7 +11,7 @@ async function listUpcomingEvents() {
         timeMax: '2025-02-28T23:59:59.999Z',
         showDeleted: false,
         singleEvents: true,
-        maxResults: 10,
+        maxResults: 2500,
         orderBy: "startTime",
         pageToken: pageToken,
       };
@@ -28,8 +29,15 @@ async function listUpcomingEvents() {
     }
 
     const output = allEvents.reduce((str, event) => {
-      const startTime = event.start.dateTime || event.start.date;
-      const endTime = event.end?.dateTime || event.end?.date || "Sem horário final";
+      const startTime = event.start.dateTime
+        ? new Date(event.start.dateTime).toLocaleString()
+        : new Date(event.start.date).toLocaleDateString();
+
+      const endTime = event.end?.dateTime
+        ? new Date(event.end.dateTime).toLocaleString()
+        : event.end?.date
+          ? new Date(event.end.date).toLocaleDateString()
+          : "Sem horário final";
       return `${str}${event.summary} (${startTime} → ${endTime})\n`;
     }, "Eventos:\n");
 
