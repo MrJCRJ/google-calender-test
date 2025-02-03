@@ -1,4 +1,6 @@
 async function listUpcomingEvents() {
+  const contentElement = document.getElementById("content");
+  contentElement.innerText = "Carregando eventos...";
 
   try {
     let allEvents = [];
@@ -43,6 +45,7 @@ async function listUpcomingEvents() {
 
     document.getElementById("content").innerText = output;
   } catch (err) {
+    contentElement.innerText = err.message;
     document.getElementById("content").innerText = err.message;
   }
 }
